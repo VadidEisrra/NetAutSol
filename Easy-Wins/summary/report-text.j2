@@ -1,0 +1,4 @@
+{{'%-10s %-8s %-15s %-12s %-12s'|format("Hostname","OS","Version","Model","Uptime")}}
+{% for host,facts in allhosts|dictsort %}
+{{'%-10s %-8s %-15s %-12s %-12s'|format(facts.inventory_hostname,facts.ansible_network_os,facts.ansible_net_version,facts.ansible_net_model,facts.ansible_sysuptime)}}
+{% endfor %}

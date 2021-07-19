@@ -1,0 +1,8 @@
+---
+- name: Collect info from devices and generate report
+  hosts: all
+  vars:
+  - results: "{{inventory_dir}}/playbooks/results"
+  tasks:
+  - include: "summary/read-{{src|default('device')}}.yml"
+  - include: "summary/report-{{dst|default('text')}}.yml"

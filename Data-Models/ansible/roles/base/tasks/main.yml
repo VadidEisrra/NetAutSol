@@ -1,0 +1,6 @@
+---
+- name: Generate base configuration
+  template: 
+    src="{{ ansible_network_os }}/base.j2" 
+    dest={{ candidate_dir }}/{{ inventory_hostname }}/snippets/base.conf
+  changed_when: False

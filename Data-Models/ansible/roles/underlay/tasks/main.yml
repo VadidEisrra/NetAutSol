@@ -1,0 +1,6 @@
+---
+- name: Generate underlay configuration
+  template:
+    src="{{ ansible_network_os }}/underlay.j2"
+    dest={{ candidate_dir }}/{{ inventory_hostname }}/snippets/underlay.conf
+  changed_when: False

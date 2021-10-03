@@ -1,0 +1,33 @@
+---
+#
+# This playbook generates the network infrastructure 
+# using roles defined in the ansible directory
+#
+
+ - name: generate device config candidates from template
+   hosts: all
+   connection: local
+   gather_facts: no
+
+   pre_tasks:
+     - name: remove existing candidate config directories
+       file: path={{ candidate_dir }}/{{ inventory_hostname }} state=absent
+       changed_when: False
+       tags: [ base, underlay, mpls ]
+     - name: create candidate config directory
+       file: path={{ candidate_dir }}/{{ inventory_hostname }}/snippets state=directory
+       changed_when: False
+       tags: [ base, underlay, mpls ]
+
+   roles:
+     - role: base
+       tags:
+         - base
+
+     - role: underlay
+       tags:
+         - underlay
+
+     - role: mpls
+       tags:
+         - mpls

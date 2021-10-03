@@ -1,0 +1,47 @@
+#jinja2:lstrip_blocks: True
+{%set lag = namespace(num=0)%}
+{%for i in interfaces%}
+    {%if 'ae' in i.name%}
+        {%set lag.num = lag.num + 1%}
+    {%endif%}
+{%endfor%}
+
+system {
+    login {
+        user ubuntu {
+            uid 2000;
+            class super-user;
+            authentication {
+                ssh-rsa "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDEuAJ2DvTUJJ9fJwtdk4YSra15oEtiWZ8xep7cnRgXmhG6dhl+iZUQISoo3cbXVVzMHbDJ2C2jE9DCyKzR4IXaJPcP/yaCfUGOa5WgBBJ/jr5rft3YJcBr4ZNWgo8a5xbGzFDGMQ/31OXwwl/CpLP8z6JUprxheLdwg08RnqiM0f3c6oahbZUHwhOT2dw+6cITeo604dZGhDNZvQZPlcJabThXqLwNvJbo+Mfjzltp0UVqNCPZdAGHI+trYI7sFuygvKNdgk6VrH1NcEhcklasWMwti1a/kRwgDpgyRDtxT6rmrDOkx2QIJcpDodDwS+BJ+pfcPkGAh4Ysop8zuK5G4g3KNEEBz8/YCq482cJEdmf/e4FnQ2X4GxZkWgGIZw1NSo3tpo4vMLc++ieyqOR8EsSMnBQCUBxSn5mukhuLQ8XUmE9uxdmf5dcsQxRNq2G2G0RCDoh2hy2WFH0j0zvvpDvV4tHQ2m9T/kqzvGvmU6sKkNDEznN0saTNtmFWjqE= ubuntu@ubuntu-server";
+            }
+        }
+    }
+    root-authentication {
+        encrypted-password "$6$LMiRDv7w$w8B9s9egvVxLsK6JEK.qCVoVU.0Sahvg8BJ8QmsHKWbSQFCMyT.yeP2z0CTQpVlhLPORBpfPBvq9PMZLKc5re0";
+    }
+    services {
+        ssh {
+            root-login allow;
+        }
+        netconf {
+            ssh;
+        }
+    }
+    host-name {{ hostname }};
+}
+chassis {
+    aggregated-devices {
+        ethernet {
+            device-count {{ lag.num }};
+        }
+    }
+}
+interfaces {
+    em0 {
+        unit 0 {
+            family inet {
+                address {{ mgmt_ip }};
+            }
+        }
+    }
+}

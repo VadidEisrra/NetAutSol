@@ -1,0 +1,19 @@
+
+no interface loopback0
+interface loopback0
+ ipv4 address {{router_id}} 255.255.255.255
+{%for iface in interfaces%}
+no interface {{iface.name}}
+interface {{iface.name}}
+ description "LINK: {%filter upper%}{{hostname}}-{{iface.peer}}{%endfilter%}"
+ ipv4 address {{iface.ip_address}}
+    {%if iface.members is defined%}
+        {%for member in iface.members%}
+no interface {{member}}
+interface {{member}}
+ description "LINK: {%filter upper%}{{hostname}}-{{iface.peer}}{%endfilter%}"
+ bundle id {{iface.name}} mode active
+        {%endfor%}
+    {%endif%}
+{%endfor%}
+!

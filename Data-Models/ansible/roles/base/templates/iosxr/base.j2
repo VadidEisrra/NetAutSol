@@ -1,0 +1,27 @@
+!! IOS XR
+!
+hostname {{hostname}}
+username ubuntu
+ group root-lr
+ secret 5 $1$0J.u$yg/IeMRNgzq5JzbiDmPhq0
+!
+address-family ipv4 unicast
+!
+line default
+ transport input ssh
+!
+interface MgmtEth0/0/CPU0/0
+ ipv4 address {{mgmt_ip}} 255.255.255.0
+!
+netconf agent tty
+!
+netconf-yang agent
+ ssh
+!
+lldp
+ timer 30
+ reinit 2
+ holdtime 120
+!
+ssh server v2
+ssh server netconf vrf default

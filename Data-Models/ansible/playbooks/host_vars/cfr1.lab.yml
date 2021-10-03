@@ -1,0 +1,18 @@
+---
+hostname: cfr1.lab
+
+mgmt_ip: 10.10.5.2
+router_id: 1.1.1.1
+router_iso: 49.0010.0100.1001.00
+
+interfaces:
+  - name: xe-0/0/2
+    peer: cfr3.lab
+    ip_address: 172.16.0.9/30
+  - name: xe-0/0/3
+    peer: cfr4.lab
+    ip_address: 172.16.0.5/30
+  - name: ae0
+    peer: cfr2.lab
+    ip_address: 172.16.0.1/30
+    members: [xe-0/0/0]

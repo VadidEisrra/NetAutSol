@@ -1,3 +1,9 @@
+# Data models assignment
+
+## About
+In this assigment I explore the process of developing infrastructure and service data models for l2vpn over ldp mpls using isis
+
+## Details
 **device_underlay.yml** 
  - _uses roles to generate config snippets of feature components of the infrastructure_
 
@@ -7,15 +13,13 @@
 **generate_service_config.yml** 
  - _generates device specific configuration required for a customer l2vpn service using the customer service data model_
 
----
 
 **device-configs** contains per device snippets (ldp mpls and isis configuration) produced by device_underlay.yml
 
 **service-configs** contains per device configuration snippets for customer services produced by generate_service_config.yml
 
----
 
-# Data model
+## Data model
 
 **hostvars** contain yaml files for each device in the lab; this is used to generate network infrastructure configuration. Each device has a hostname, management IP, router ID and iso address as well as defined interfaces used for links among peers in the network.
 ```

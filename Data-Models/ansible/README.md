@@ -1,27 +1,25 @@
-# Data models assignment
+# Data models
 
-## About
-In this assigment I explore the process of developing infrastructure and service data models for l2vpn over ldp mpls using isis
+In this assigment I explore the process of developing infrastructure and service data models to manage l2vpn over mpls in a multi-vendor environment.
 
-## Details
-**device_underlay.yml** 
- - _uses roles to generate config snippets of feature components of the infrastructure_
+- network infrastructure data is stored in node specific YAML in hostvars directory
+- service data is stored in _services/services.yml_ file
 
-**generate_service_model.yml** 
- - _generates transactional service data model (**services/svc-CUSTOMER/service-model.json**) for customers in services.yml. Service model contains data required by templates to produce device config for an l2circuit_
+Infrastructure configuration snippets are generated via _devices_underlay.yml_ playbook using ansible roles and stored in _device-config_ directory.
 
-**generate_service_config.yml** 
- - _generates device specific configuration required for a customer l2vpn service using the customer service data model_
+Service configuration is generated in two steps:
+1. **generate_service_model.yml** consumes customer specific data in _services.yml_ and produces a complete service model containing all elements required for l2circuit template to generate device-specific configuration. These are found in *services/svc-CUSTOMER/service-model.json*
 
-
-**device-configs** contains per device snippets (ldp mpls and isis configuration) produced by device_underlay.yml
-
-**service-configs** contains per device configuration snippets for customer services produced by generate_service_config.yml
-
+2. **generate_service_config.yml** parses the customer _service-model.json_ and produces device-specific configuration for the l2circuit. These configuration snippets are stored in *device-configs/DEVICE/customer-[a|z]_service_details.conf*
 
 ## Data model
 
-**hostvars** contain yaml files for each device in the lab; this is used to generate network infrastructure configuration. Each device has a hostname, management IP, router ID and iso address as well as defined interfaces used for links among peers in the network.
+**hostvars** contain yaml files for each device in the lab. Each defines
+- hostname
+- management IP
+- router ID
+- iso address
+- interfaces
 ```
 ---
 hostname: cfr1.lab
@@ -42,7 +40,11 @@ interfaces:
     ip_address: 172.16.0.1/30
     members: [xe-0/0/0]
 ```
-**services.yml** contains service definition per customer. Each customer is a dictionary containing the circuit id, service type, and endpoint locations for the l2vpn service.
+**services.yml** contains service definition per customer. Each defines
+- circuit id
+- service type
+- A endpoint device and port
+- Z endpoint device and port
 ```
 ---
 Neptune:

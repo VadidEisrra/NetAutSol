@@ -10,7 +10,7 @@ Infrastructure configuration snippets are generated via _devices_underlay.yml_ p
 Service configuration is generated in two steps:
 1. **generate_service_model.yml** consumes customer specific data in _services.yml_ and produces a complete service model containing all elements required for l2circuit template to generate device-specific configuration. These are found in *services/svc-CUSTOMER/service-model.json*
 
-2. **generate_service_config.yml** parses the customer _service-model.json_ and produces device-specific configuration for the l2circuit. These configuration snippets are stored in *device-configs/DEVICE/customer-[a|z]_service_details.conf*
+2. **generate_service_config.yml** parses the customer _service-model.json_ and produces device-specific configuration for the l2circuit. These configuration snippets are stored in *service-configs/DEVICE/customer-[a|z]_service_details.conf*
 
 ## Data model
 

@@ -1,6 +1,0 @@
----
-- name: Generate mpls configuration
-  template:
-    src="{{ ansible_network_os }}/mpls-ldp.j2"
-    dest={{ candidate_dir }}/{{ inventory_hostname }}/snippets/mpls-ldp.conf
-  changed_when: False

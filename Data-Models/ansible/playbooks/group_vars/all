@@ -1,3 +1,0 @@
----
-candidate_dir: /etc/ansible/device-configs/candidate
-service_dir: /etc/ansible/service-configs

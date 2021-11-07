@@ -1,5 +1,0 @@
-#
-# Reads device facts from a YAML file
-#
----
-- include_vars: "{{results}}/{{inventory_hostname}}.yml"

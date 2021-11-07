@@ -1,0 +1,5 @@
+Hostname   OS       Version         Model        Uptime      
+cfr1.lab   junos    18.4R2-S2.3     vqfx-10000   36478184    
+cfr2.lab   junos    18.4R2-S2.3     vqfx-10000   36478191    
+cfr3.lab   iosxr    6.3.1[Default]  IOS XRv      36468797    
+cfr4.lab   iosxr    6.3.1[Default]  IOS XRv      36468856    

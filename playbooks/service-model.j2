@@ -1,0 +1,16 @@
+#jinja2:lstrip_blocks: True
+{% for cust, svc in services.items() %}
+{{ cust }}:
+  a_service_details:
+    target_device: {{ svc.a_loc.node }}
+    remote_device: {{ svc.z_loc.node }}
+    local_interface: {{ svc.a_loc.iface }}
+    circuit_id: {{ svc.cid }}
+    service_type: {{ svc.service }}
+  z_service_details:
+    target_device: {{ svc.z_loc.node }}
+    remote_device: {{ svc.a_loc.node }}
+    local_interface: {{ svc.z_loc.iface }}
+    circuit_id: {{ svc.cid }}
+    service_type: {{ svc.service }}
+{% endfor %}

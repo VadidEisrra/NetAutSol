@@ -1,0 +1,16 @@
+no interface {{ loc.value.local_interface }} l2transport 
+no interface {{ loc.value.local_interface }}.0 
+
+interface {{ loc.value.local_interface }}
+ no shutdown
+interface {{ loc.value.local_interface }}.0 l2transport 
+ description "CUST: {{ svc.customer }} | CKTID:" {{ loc.value.circuit_id }}
+ encapsulation default
+
+no l2vpn pw-class {{ loc.value.circuit_id }}
+no l2vpn xconnect group TYPE4 p2p {{ loc.value.circuit_id }}
+no l2vpn xconnect group TYPE5 p2p {{ loc.value.circuit_id }}
+
+l2vpn pw-class {{ loc.value.circuit_id }} encapsulation mpls transport-mode ethernet 
+l2vpn xconnect group TYPE5 p2p {{ loc.value.circuit_id }} interface {{ loc.value.local_interface }}.0 
+l2vpn xconnect group TYPE5 p2p {{ loc.value.circuit_id }} neighbor ipv4 {{ loc.value.remote_device.ip }} pw-id {{ loc.value.circuit_id }} pw-class {{ loc.value.circuit_id }}

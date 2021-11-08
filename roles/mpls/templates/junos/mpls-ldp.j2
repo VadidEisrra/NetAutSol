@@ -1,0 +1,16 @@
+protocols {
+    replace: ldp {
+        track-igp-metric;
+{%for iface in interfaces%}
+        interface {{iface.name}};
+{%endfor%}
+        interface lo0.0
+    }
+}
+protocols {
+    replace: mpls {
+{%for iface in interfaces%}
+        interface {{iface.name}};
+{%endfor%}
+    }
+}

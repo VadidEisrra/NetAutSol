@@ -1,0 +1,20 @@
+---
+
+- name: install config via napalm
+  napalm_install_config:
+    hostname: '{{ inventory_hostname }}'
+    username: '{{ user }}'
+    password: '{{ passwd }}'
+    dev_os: '{{ ansible_network_os }}'
+    timeout: 120
+    config_file: '{{ candidate_dir }}/{{ inventory_hostname }}/candidate.conf'
+    commit_changes: True
+    replace_config: False
+    get_diffs: True
+    diff_file: '/var/log/ansible/diffs/{{ inventory_hostname }}_{{ date.stdout }}.diff'
+  register: napalm_config_result
+
+- name: print diff
+  debug:
+    msg: "{{ napalm_config_result.msg.split('\n') }}"
+  when: napalm_config_result.msg != ""

@@ -1,0 +1,54 @@
+---
+
+# ansible-playbook -i host.yaml playbooks/service_deploy.yml -e customer=""
+
+- name: provision services via router config
+  hosts: all
+  connection: local
+  gather_facts: false
+
+  roles:
+    - juniper.junos
+
+  vars:
+    customer: "{{ customer }}"
+
+  tasks:
+
+    - include_vars:
+        file: "services.yml"
+        name: services
+
+    - set_fact:
+        a_device: "{{ lookup('vars','services')[customer]['a_loc']['node'] }}"
+    - set_fact:
+        z_device: "{{ lookup('vars','services')[customer]['z_loc']['node'] }}"
+
+    - stat:
+        path: "{{ service_dir }}/{{ a_device }}/{{ customer }}-a_service_details.conf"
+      register: a_snippet_st
+    - stat:
+        path: "{{ service_dir }}/{{ z_device }}/{{ customer }}-z_service_details.conf"
+      register: z_snippet_st
+
+- name: Configure A side
+  hosts: all
+  tasks: 
+    -  include_role:
+         name: service-provision
+       vars:
+         path: "{{ a_snippet_st.stat.path }}"
+       when: 
+        - inventory_hostname == a_device 
+        - a_snippet_st.stat.exists == true
+
+- name: Configure z side
+  hosts: all
+  tasks:
+    -  include_role:
+         name: service-provision
+       vars:
+        path: "{{ z_snippet_st.stat.path }}"
+       when: 
+        - inventory_hostname == z_device 
+        - z_snippet_st.stat.exists == true

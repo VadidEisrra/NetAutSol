@@ -1,0 +1,42 @@
+---
+#
+#   Validates status of l2ckt defined in services.yml
+#   ansible-playbook -i hosts.yml playbooks/service_validate.yml -e cid="200"   
+                               
+- hosts: all
+  gather_facts: false
+  tasks:
+    - set_fact:
+        host_facts: "{{ hostvars }}"
+      run_once: true
+      delegate_to: localhost
+      delegate_facts: true
+
+- hosts: localhost
+  gather_facts: false
+  
+  vars:
+    cid: "{{ cid }}"
+
+    cust_details: "{{ lookup('vars', 'services')[item] }}"
+
+    a_node_name: "{{ lookup('vars', 'services')[item]['a_loc']['node'] }}"
+    a_node_port: "{{ lookup('vars', 'services')[item]['a_loc']['iface'] }}"
+    a_node_make: "{{ lookup('vars', 'hostvars')[a_node_name]['ansible_network_os'] }}"
+
+    z_node_name: "{{ lookup('vars', 'services')[item]['z_loc']['node'] }}"
+    z_node_port: "{{ lookup('vars', 'services')[item]['z_loc']['iface'] }}"
+    z_node_make: "{{ lookup('vars', 'hostvars')[z_node_name]['ansible_network_os'] }}"
+
+  roles:
+    - juniper.junos
+
+  tasks:
+    - include_vars:
+        file: "services.yml"
+        name: services
+    - set_fact:
+        cust="{{ services.keys() | list }}"
+    - debug: var=cid
+    - include_tasks: service_validate_tasks-1.yml
+      loop: "{{ cust }}"

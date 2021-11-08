@@ -1,0 +1,45 @@
+---
+ - name: generate device config candidates from template
+   hosts: all
+   connection: local
+   gather_facts: no
+
+   vars:
+     run_diff: false
+
+   pre_tasks:
+     - name: remove existing candidate config directories
+       file: path={{ candidate_dir }}/{{ inventory_hostname }} state=absent
+       changed_when: False
+       tags: [ base, underlay, mpls ]
+     - name: create candidate config directory
+       file: path={{ candidate_dir }}/{{ inventory_hostname }}/snippets state=directory
+       changed_when: False
+       tags: [ base, underlay, mpls ]
+
+   roles:
+     - role: base
+       tags:
+         - base
+
+     - role: underlay
+       tags:
+         - underlay
+
+     - role: mpls
+       tags:
+         - mpls
+
+   post_tasks:
+     - name: assemble candidate.conf
+       assemble:
+         src={{ candidate_dir }}/{{ inventory_hostname }}/snippets/ regexp='conf$'
+         dest={{ candidate_dir }}/{{ inventory_hostname }}/candidate.conf mode=0755
+       changed_when: False
+       tags: [ always ]
+
+     - name: Diff config
+       import_role:
+         name: config-diff
+       tags: [ always ]
+       when: run_diff is defined and run_diff == 'True'

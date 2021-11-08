@@ -1,0 +1,6 @@
+no interface {{ loc.value.local_interface }} l2transport 
+no interface {{ loc.value.local_interface }}.0 
+
+no l2vpn pw-class {{ loc.value.circuit_id }}
+no l2vpn xconnect group TYPE4 p2p {{ loc.value.circuit_id }}
+no l2vpn xconnect group TYPE5 p2p {{ loc.value.circuit_id }}

@@ -1,0 +1,14 @@
+---
+
+- block:
+  - include: commit-juniper.yml
+    when: ansible_network_os  == 'junos'
+
+  - include: commit-napalm.yml
+    when: ansible_network_os  == 'iosxr'
+
+  - name: remove service candidate config
+    file: path={{ path }} state=absent
+    changed_when: False
+    delegate_to: localhost
+  when: a_snippet_st.stat.exists

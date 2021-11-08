@@ -1,0 +1,22 @@
+---
+
+- name: generate {{ val }} validation file
+  template:
+    src="{{ val }}.j2"
+    dest={{ role_path }}/files/{{ inventory_hostname }}/{{ inventory_hostname }}_{{ val }}.yml
+  changed_when: False
+
+- block:
+  - name: validate {{ val }}
+    napalm_validate:
+      hostname: "{{ inventory_hostname }}"
+      username: "{{ user }}"
+      password: "{{ passwd }}"
+      dev_os: "{{ ansible_network_os }}"
+      validation_file: "{{ role_path }}/files/{{ inventory_hostname }}/{{ inventory_hostname }}_{{ val }}.yml"
+    register: report
+    ignore_errors: yes
+  rescue:
+    - name: report
+      debug:
+        msg: "{{ report|to_nice_json }}"

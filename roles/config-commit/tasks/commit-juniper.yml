@@ -1,0 +1,24 @@
+---
+- name: install config on juniper via netconf
+  juniper_junos_config:
+    host: '{{ inventory_hostname }}'
+    user: '{{ user }}'
+    passwd: '{{ passwd }}'
+    port: '22'
+    load: replace
+    timeout: 300
+    config_mode: private
+    check: True
+    diff: True
+    ignore_warning: True
+    file: '{{ candidate_dir }}/{{ inventory_hostname }}/candidate.conf'
+    logfile: '/var/log/ansible/ansible_{{ inventory_hostname }}.log'
+    level: 'INFO'
+    diffs_file: '/var/log/ansible/diffs/{{ inventory_hostname }}_{{ date.stdout }}.diff'
+    comment: "configured by ansible ({{ lookup('env', 'USER') }}) on {{ date.stdout }}"
+  register: junos_config_result
+
+- name: print diff
+  debug:
+    msg: "{{ junos_config_result.diff_lines }}"
+  when: junos_config_result.diff_lines is defined

@@ -1,0 +1,14 @@
+ 
+ router isis lab
+ is-type level-2-only
+ net {{router_iso}}
+ address-family ipv4 unicast
+  metric-style wide
+{%for iface in interfaces%}
+ no interface {{iface.name}}
+ interface {{iface.name}}
+  point-to-point
+  address-family ipv4 unicast
+   mpls ldp sync
+{%endfor%}
+ !

@@ -1,0 +1,25 @@
+---
+
+- name: iosxr show cmd
+  cisco.iosxr.iosxr_command:
+    provider:
+      host: "{{ item.name }}"
+      username: "{{ user }}"
+      password: "{{ passwd }}"
+    commands: "show interfaces {{ item.port }}.0 description"
+  register: cisco_result
+  when: item.make == 'iosxr'
+
+- name: junos show cmd
+  juniper_junos_command:
+    host: "{{ item.name }}"
+    user: "{{ user }}"
+    passwd: "{{ passwd }}"
+    commands: "show interfaces descriptions {{ item.port }}.0"
+  register: junos_result
+  when: item.make == 'junos'
+
+- debug: var=cisco_result.stdout_lines
+  when: cisco_result.stdout_lines is defined
+- debug: var=junos_result.stdout_lines
+  when: junos_result.stdout_lines is defined

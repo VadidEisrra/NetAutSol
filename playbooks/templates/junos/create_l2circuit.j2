@@ -1,0 +1,11 @@
+delete interfaces {{ loc.value.local_interface }} unit 0
+
+delete protocols l2circuit neighbor {{ loc.value.remote_device.ip }} interface {{ loc.value.local_interface }}.0
+
+set interfaces {{ loc.value.local_interface }} unit 0 description "CUST: {{ svc.customer }} | CKTID: {{ loc.value.circuit_id }}" 
+set interfaces {{ loc.value.local_interface }} encapsulation ethernet-ccc 
+
+set protocols l2circuit neighbor {{ loc.value.remote_device.ip }} interface {{ loc.value.local_interface }}.0 virtual-circuit-id {{ loc.value.circuit_id }} 
+set protocols l2circuit neighbor {{ loc.value.remote_device.ip }} interface {{ loc.value.local_interface }}.0 encapsulation-type ethernet 
+set protocols l2circuit neighbor {{ loc.value.remote_device.ip }} interface {{ loc.value.local_interface }}.0 no-control-word 
+set protocols l2circuit neighbor {{ loc.value.remote_device.ip }} interface {{ loc.value.local_interface }}.0 pseudowire-status-tlv

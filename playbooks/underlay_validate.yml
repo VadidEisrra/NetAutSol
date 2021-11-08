@@ -1,0 +1,25 @@
+---
+- name: validate underlay using napalm
+  hosts: all
+  connection: local
+  gather_facts: no
+
+  vars:
+    val: lldp
+
+  pre_tasks:
+    - name: remove existing validation file directory
+      file: path=/etc/ansible/roles/validate/files/{{ inventory_hostname }} state=absent
+      changed_when: False
+    - name: create validation file directory
+      file: path=/etc/ansible/roles/validate/files/{{ inventory_hostname }} state=directory
+      changed_when: False
+
+  roles:
+   - validate
+
+  post_tasks:
+    - name: remove validation file directory
+      file: path=/etc/ansible/roles/validate/files/{{ inventory_hostname }} state=absent
+      changed_when: False
+      delegate_to: localhost

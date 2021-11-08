@@ -1,0 +1,17 @@
+protocols {
+    replace: isis {
+{%for iface in interfaces-%}
+        interface {{iface.name}} {
+            ldp-synchronization;
+            point-to-point;
+            level 1 disable;
+        }
+{%endfor%}
+        interface lo0.0 {
+            passive;
+            level 1 disable;
+            level 2 metric 0
+        }
+    }
+}
+

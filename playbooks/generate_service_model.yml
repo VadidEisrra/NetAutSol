@@ -1,0 +1,45 @@
+---
+# ansible-playbook -i hosts.yml playbooks/generate_service_model.yml
+
+- hosts: all
+  gather_facts: false
+  tasks:
+    - set_fact:
+        host_facts: "{{ hostvars }}"
+      run_once: true
+      delegate_to: localhost
+      delegate_facts: true
+
+- hosts: localhost
+  gather_facts: false
+  
+  vars:
+
+    cust_details: "{{ lookup('vars', 'data')[item] }}"
+
+    a_node_name: "{{ lookup('vars', 'data')[item]['a_service_details']['target_device'] }}"
+    a_node_ip: "{{ lookup('vars', 'hostvars')[a_node_name]['router_id'] }}"
+    a_node_make: "{{ lookup('vars', 'hostvars')[a_node_name]['ansible_network_os'] }}"
+    a_device: 
+      name: "{{a_node_name}}" 
+      ip: "{{a_node_ip}}" 
+      make: "{{a_node_make}}"
+
+    z_node_name: "{{ lookup('vars', 'data')[item]['a_service_details']['remote_device'] }}"
+    z_node_ip: "{{ lookup('vars', 'hostvars')[z_node_name]['router_id'] }}"
+    z_node_make: "{{ lookup('vars', 'hostvars')[z_node_name]['ansible_network_os'] }}"
+    z_device: 
+      name: "{{z_node_name}}"
+      ip: "{{z_node_ip}}"
+      make: "{{z_node_make}}"
+
+  tasks:
+    - include_vars:
+        file: "services.yml"
+        name: services
+    - set_fact:
+        data="{{ lookup('template', 'service-model.j2')| from_yaml }}"
+    - set_fact:
+        cust="{{ data.keys() | list }}"
+    - include_tasks: tasks.yml
+      loop: "{{ cust }}"

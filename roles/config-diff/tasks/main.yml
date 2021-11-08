@@ -1,0 +1,31 @@
+---
+
+ - name: check for candidate file
+   stat:
+     path: '{{ candidate_dir }}/{{ inventory_hostname }}/candidate.conf'
+     get_md5: no
+     get_checksum: no
+   register: candidate_file_st
+
+ - name: diff config
+   napalm_install_config:
+     hostname: '{{ inventory_hostname }}'
+     username: '{{ user }}'
+     password: '{{ passwd }}'
+     dev_os: '{{ ansible_network_os }}'
+     config_file: '{{ candidate_dir }}/{{ inventory_hostname }}/candidate.conf'
+     commit_changes: false
+     get_diffs: True
+     replace_config: false
+     optional_args:
+       port: 22
+   register: diff
+   when: candidate_file_st.stat.exists
+
+ - name: print diff to stdout
+   debug:
+     msg: "{{ diff.msg.split('\n') }}"
+   when:
+     - candidate_file_st.stat.exists
+     - diff is defined
+     - diff.msg != ""

@@ -1,0 +1,6 @@
+
+delete interfaces {{ loc.value.local_interface }} encapsulation ethernet-ccc
+delete interfaces {{ loc.value.local_interface }} unit 0
+
+delete protocols l2circuit neighbor {{ loc.value.remote_device.ip }} interface {{ loc.value.local_interface }}.0
+delete protocols l2circuit neighbor {{ loc.value.remote_device.ip }}

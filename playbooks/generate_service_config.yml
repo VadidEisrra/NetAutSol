@@ -1,0 +1,22 @@
+---
+# ansible-playbook -i hosts.yml playbooks/generate_service_config.yml
+
+- hosts: localhost
+  gather_facts: false
+  
+  tasks:
+   - find:
+       paths: /etc/ansible/playbooks/services/
+       patterns: 'svc-*'
+       file_type: directory
+     register: customer
+   - set_fact:
+      svc_dirs: "{{ svc_dirs|default([]) + [ item.path ] }}"
+     loop: "{{ customer.files }}"
+     loop_control:
+       label: "{{ item.path }}"
+   - include_tasks: service_config_tasks-1.yml
+     loop: "{{ svc_dirs }}"
+     loop_control:
+       loop_var: dir
+       label: "{{ dir }}"

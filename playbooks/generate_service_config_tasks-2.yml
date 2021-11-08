@@ -1,0 +1,32 @@
+---
+- block:
+  - set_fact:
+      svc_template: "templates/iosxr/create_l2circuit.j2"
+    when: loc.value.target_device.make == 'iosxr'
+  - set_fact:
+      svc_template: "templates/junos/create_l2circuit.j2"
+    when: loc.value.target_device.make == 'junos'
+  when: svc.state == "present"
+
+- block:
+  - set_fact:
+      svc_template: "templates/iosxr/remove_l2circuit.j2"
+    when: loc.value.target_device.make == 'iosxr'
+  - set_fact:
+      svc_template: "templates/junos/remove_l2circuit.j2"
+    when: loc.value.target_device.make == 'junos'
+  when: svc.state == "absent"
+  
+- set_fact:
+    target_device_dir: "{{ service_dir }}/{{ loc.value.target_device.name }}"
+
+- stat:
+   path: target_device_dir
+  register: device_dir_st
+
+- file: path={{ target_device_dir }} state=directory
+  when: device_dir_st.stat.exists == false
+
+- template:
+    src: "{{ svc_template }}"
+    dest: "{{ target_device_dir }}/{{ svc.customer }}-{{ loc.key }}.conf"

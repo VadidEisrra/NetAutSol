@@ -1,0 +1,14 @@
+#jinja2:lstrip_blocks: True
+---
+- get_lldp_neighbors:
+{% for iface in interfaces %}
+  {% if iface.members is defined %}
+    {% for member in iface.members %}
+    {{ member }}:
+      - hostname: {{ iface.peer }}
+    {% endfor %}
+  {% else %}
+    {{ iface.name }}:
+      - hostname: {{ iface.peer }}
+  {% endif %}
+{% endfor %}

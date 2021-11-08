@@ -1,0 +1,14 @@
+---
+Neptune:
+  cid: 100
+  service: l2ckt
+  state: absent
+  a_loc: { node: cfr1.lab, iface: "xe-0/0/4" }
+  z_loc: { node: cfr2.lab, iface: "xe-0/0/4" }
+  
+Venus:
+  cid: 200
+  service: l2ckt
+  state: present
+  a_loc: { node: cfr1.lab, iface: "xe-0/0/5" }
+  z_loc: { node: cfr3.lab, iface: "Gi0/0/0/2" }

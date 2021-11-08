@@ -1,0 +1,18 @@
+---
+
+- name: commit router config
+  hosts: all
+  connection: local
+  gather_facts: false
+
+  roles:
+    - { role: juniper.junos, tags: [always], when: ansible_network_os == 'junos' }
+    - role: logfile-exists
+    - role: config-commit
+
+  post_tasks:
+    - name: remove candidate config directories after deploy
+      file: path={{ candidate_dir }}/{{ inventory_hostname }} state=absent
+      changed_when: False
+      run_once: true
+      delegate_to: localhost

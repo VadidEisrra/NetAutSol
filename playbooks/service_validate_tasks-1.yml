@@ -1,0 +1,19 @@
+---
+- set_fact:
+    circuit_id: "{{ cust_details['cid'] }}"
+- set_fact:
+    state: "{{ cust_details['state'] | lower }}"
+
+- block:    
+  - set_fact:
+      a_loc: { name: "{{ a_node_name }}", make: "{{ a_node_make }}", port: "{{ a_node_port }}" }
+  
+  - set_fact:
+      z_loc: { name: "{{ z_node_name }}", make: "{{ z_node_make }}", port: "{{ z_node_port }}" }
+
+  - include_tasks: service_validate_tasks-2.yml
+    with_items:
+      - "{{ a_loc }}"
+      - "{{ z_loc }}"
+    when: state == 'present'
+  when: cid == circuit_id

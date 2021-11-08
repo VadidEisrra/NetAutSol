@@ -1,0 +1,36 @@
+---
+- set_fact:
+    service_state: "{{ cust_details['state'] | lower }}"
+
+- set_fact:
+    service_a: "{{ cust_details['a_service_details'] }}"
+- set_fact:
+    service_a: "{{ service_a | combine({asvc.key: asvc.value}) }}"
+  with_items:
+  - { key: "target_device", value: "{{ a_device }}" }
+  - { key: "remote_device", value: "{{ z_device }}" }
+  loop_control:
+    loop_var: asvc
+
+- set_fact:
+    service_z: "{{ cust_details['z_service_details'] }}"
+- set_fact:
+    service_z: "{{ service_z | combine({zsvc.key: zsvc.value}) }}"
+  with_items:
+  - { key: "target_device", value: "{{ z_device }}" }
+  - { key: "remote_device", value: "{{ a_device }}" }
+  loop_control:
+    loop_var: zsvc
+
+- set_fact:
+    cust:
+       state: "{{ service_state }}"
+       customer: "{{ item }}"
+       a_service_details: "{{ service_a }}"
+       z_service_details: "{{ service_z }}"
+
+- file: path=services/svc-{{ item }} state=absent
+- file: path=services/svc-{{ item }} state=directory
+- copy:
+    content: "{{ cust | to_nice_json }}"
+    dest: "services/svc-{{ item }}/service-model.json"

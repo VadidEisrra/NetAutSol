@@ -1,6 +1,7 @@
 ---
-
-# ansible-playbook -i host.yaml playbooks/service_deploy.yml -e customer=""
+# Deploys l2vpn endpoint snippets found in service-configs for customer
+#
+# ansible-playbook -i host.yaml playbooks/service_deploy.yml -e customer="Neptune"
 
 - name: provision services via router config
   hosts: all

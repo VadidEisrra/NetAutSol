@@ -1,0 +1,34 @@
+{
+    "a_service_details": {
+        "circuit_id": 100,
+        "local_interface": "xe-0/0/4",
+        "remote_device": {
+            "ip": "2.2.2.2",
+            "make": "junos",
+            "name": "cfr2.lab"
+        },
+        "service_type": "l2ckt",
+        "target_device": {
+            "ip": "1.1.1.1",
+            "make": "junos",
+            "name": "cfr1.lab"
+        }
+    },
+    "customer": "Neptune",
+    "state": "absent",
+    "z_service_details": {
+        "circuit_id": 100,
+        "local_interface": "xe-0/0/4",
+        "remote_device": {
+            "ip": "1.1.1.1",
+            "make": "junos",
+            "name": "cfr1.lab"
+        },
+        "service_type": "l2ckt",
+        "target_device": {
+            "ip": "2.2.2.2",
+            "make": "junos",
+            "name": "cfr2.lab"
+        }
+    }
+}

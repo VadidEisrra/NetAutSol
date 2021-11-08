@@ -29,8 +29,8 @@
        a_service_details: "{{ service_a }}"
        z_service_details: "{{ service_z }}"
 
-- file: path=services/svc-{{ item }} state=absent
-- file: path=services/svc-{{ item }} state=directory
+- file: path=/etc/ansible/services/svc-{{ item }} state=absent
+- file: path=/etc/ansible/services/svc-{{ item }} state=directory
 - copy:
     content: "{{ cust | to_nice_json }}"
-    dest: "services/svc-{{ item }}/service-model.json"
+    dest: "/etc/ansible/services/svc-{{ item }}/service-model.json"

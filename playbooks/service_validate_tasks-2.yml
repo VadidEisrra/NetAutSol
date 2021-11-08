@@ -1,5 +1,7 @@
 ---
-
+#
+# Return operational status of endpoint
+#
 - name: iosxr show cmd
   cisco.iosxr.iosxr_command:
     provider:

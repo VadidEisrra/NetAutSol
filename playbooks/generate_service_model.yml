@@ -1,5 +1,11 @@
 ---
+#
+# Generates service model containing data required by
+# templates that produce service config snippets
+#
+# Output to services/svc-CUSTOMER/service-model.json
 # ansible-playbook -i hosts.yml playbooks/generate_service_model.yml
+#
 
 - hosts: all
   gather_facts: false

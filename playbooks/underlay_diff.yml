@@ -1,4 +1,9 @@
 ---
+#
+# Produce underlay diff once candidate config files are generated
+# ansible-playbook -i hosts.yml playbooks/underlay_diff.yml
+# 
+
 - name: get diff
   hosts: all
   connection: local

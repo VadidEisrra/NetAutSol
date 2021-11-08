@@ -1,4 +1,7 @@
 ---
+#
+# Proceed to validate port status when provided CID matches customer CID
+#
 - set_fact:
     circuit_id: "{{ cust_details['cid'] }}"
 - set_fact:

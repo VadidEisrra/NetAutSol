@@ -1,4 +1,9 @@
 ---
+#
+# "val" extra var selects template for validation file to generate, defaults to lldp
+# ansible-playbook -i hosts.yml playbooks/underlay_validate.yml -e val="lldp"
+#
+
 - name: validate underlay using napalm
   hosts: all
   connection: local

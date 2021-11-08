@@ -1,12 +1,17 @@
 ---
+# Generate per-device code snippets of a customer service
+# using json model defined in services/svc-CUSTOMER/service-model.json
+#
+# Output to service-configs/DEVICE/CUSTOMER-[a|z]_service_details.conf
 # ansible-playbook -i hosts.yml playbooks/generate_service_config.yml
+#
 
 - hosts: localhost
   gather_facts: false
   
   tasks:
    - find:
-       paths: /etc/ansible/playbooks/services/
+       paths: /etc/ansible/services/
        patterns: 'svc-*'
        file_type: directory
      register: customer
@@ -15,7 +20,7 @@
      loop: "{{ customer.files }}"
      loop_control:
        label: "{{ item.path }}"
-   - include_tasks: service_config_tasks-1.yml
+   - include_tasks: generate_service_config_tasks-1.yml
      loop: "{{ svc_dirs }}"
      loop_control:
        loop_var: dir

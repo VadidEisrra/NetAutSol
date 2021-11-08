@@ -1,5 +1,8 @@
 ---
-
+#
+# Commit candidate configuration found in device-configs/DEVICE/candidate.conf
+# ansible-playbook -i hosts.yml playbooks/underlay_deploy.yml
+#
 - name: commit router config
   hosts: all
   connection: local

@@ -1,4 +1,7 @@
 ---
+#
+# Generate device config for each endpoint defined in customer service-model.json
+#
 - block:
   - set_fact:
       svc_template: "templates/iosxr/create_l2circuit.j2"

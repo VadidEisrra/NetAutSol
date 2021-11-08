@@ -1,4 +1,10 @@
 ---
+# 
+# Snippets and candidate file output to device-configs directory
+# Optionally run diff in same play:
+# ansible-playbook -i hosts.yml playbooks/device_underlay.yml -e run_diff="True"
+#
+
  - name: generate device config candidates from template
    hosts: all
    connection: local

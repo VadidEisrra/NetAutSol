@@ -1,8 +1,8 @@
 ---
 #
-#   Validates status of l2ckt defined in services.yml
+#   Validates operational status of l2ckt as defined in services.yml
 #   ansible-playbook -i hosts.yml playbooks/service_validate.yml -e cid="200"   
-                               
+#                              
 - hosts: all
   gather_facts: false
   tasks:

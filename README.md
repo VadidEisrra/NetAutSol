@@ -1,4 +1,4 @@
-# HELLO WRITE SOMETHING
+# Easy Wins
 
 Using the report framework detailed in this module, the file summary.log found in the results folder is generated using the following playbook and parameters:
 
